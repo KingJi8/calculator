@@ -61,8 +61,8 @@ body {
   margin: auto;
   width: 300px;
   border-radius: 20px;
-
-  background-color: white;
+  box-shadow: 0 0 100px rgba(255,255,255,.5);
+  background-color: #fff;
 }
 .calculator {
   width: 100%;
@@ -81,8 +81,8 @@ body {
 }
 .showBox .prevArea {
   height: 32px;
-  font-size: 14px;
-  color: #666;
+  font-size: 12px;
+  color: #777;
   text-align: right;
 }
 .showBox .showArea {
@@ -108,7 +108,7 @@ body {
   border-radius: 30px;
   width: 24%;
   height:50px;
-  font-size: 20px;;
+  font-size: 20px;
 }
 .numBtn {
   background-color: #82AAE3;
@@ -121,4 +121,8 @@ body {
 }
 .btnBox .btnDouble {
   width: 49%;
+}
+.btnBox button:hover {
+  background-color: #C0DEFF;
+  cursor: pointer;
 }
