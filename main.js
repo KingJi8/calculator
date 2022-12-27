@@ -28,11 +28,16 @@ $(document).ready(function(){
       case '/' : return answer = prevTotal / nextTotal;
     }
   }
+
+  // 숫자 사이 , 넣기
+  function numComma(num){
+    return num.toLocaleString(undefined, { maximumFractionDigits: 9 });
+  }
   
   // 숫자 버튼을 눌렀을 때
   $('.numBtn').click(function(){
     // 첫번째 숫자
-    if(calculation == ''){
+    if(calculation == '' && prevNum.length < 10) {
         // 소수점 고려
         if($(this).text() == "." && prevNum.includes(".") == true) {
           console.log("nothing")
@@ -45,10 +50,10 @@ $(document).ready(function(){
           console.log($(this).text(), prevNum);
         }
         prevTotal = Number(prevNum.join(''));
-        $showAnswer.text(prevTotal.toLocaleString());
+        $showAnswer.text(numComma(prevTotal));
     } 
     // 두번째 숫자
-    else {
+    else if(calculation != '' && nextNum.length < 10){
         // 소수점 고려
         if($(this).text() == "." && nextNum.includes(".") == true) {
           console.log("nothing")
@@ -61,7 +66,7 @@ $(document).ready(function(){
           console.log($(this).text(), nextNum);
         }
         nextTotal = Number(nextNum.join(''));
-        $showAnswer.text(nextTotal.toLocaleString());
+        $showAnswer.text(numComma(nextTotal));
     }
   })
 
@@ -72,54 +77,44 @@ $(document).ready(function(){
       // 숫자를 아무것도 안 친 경우
       if(nextNum.length == 0){
         calculation = $(this).text();
-        $showPrev.text(prevTotal.toLocaleString() + " " + calculation);
-
-        console.log("ㄱ", prevNum, nextNum, prevTotal, nextTotal, answer, calculation);
+        $showPrev.text(numComma(prevTotal) + " " + calculation);
       } 
       // 숫자를 친 경우, 계산 진행
       else {
         getAnswer();
         prevTotal = answer;
         calculation = $(this).text();
-        $showPrev.text(prevTotal.toLocaleString() + " " + calculation);
+        $showPrev.text(numComma(prevTotal) + " " + calculation);
         $showAnswer.text(0);
         nextTotal = 0;
         prevNum = [];
         nextNum = [];
         answer = 0;
-
-        console.log("ㄴ", prevNum, nextNum, prevTotal, nextTotal, answer, calculation);
       }
     }
 
     // 사칙연산 x , 답 x (첫 계산)
     else if(calculation == '' && answer == 0) {
       calculation = $(this).text();
-      $showPrev.text(prevTotal.toLocaleString() + " " + calculation);
+      $showPrev.text(numComma(prevTotal) + " " + calculation);
       $showAnswer.text(0);
-
-      console.log("ㄷ", prevNum, nextNum, prevTotal, nextTotal, answer, calculation);
     }
     // 사칙연산 x , 답 o (=을 누르고 사칙연산을 누른 경우)
     else if(calculation == '' && answer != 0) {
       calculation = $(this).text();
       prevTotal = answer;
-      $showPrev.text(prevTotal.toLocaleString() + " " + calculation);
+      $showPrev.text(numComma(prevTotal) + " " + calculation);
       $showAnswer.text(0);
-
-      console.log("ㄹ", prevNum, nextNum, prevTotal, nextTotal, answer, calculation);
     }
     // 그 외
     else {
       getAnswer();
       prevTotal = answer;
       calculation = $(this).text();
-      $showPrev.text(prevTotal.toLocaleString() + " " + calculation);
+      $showPrev.text(numComma(prevTotal) + " " + calculation);
       $showAnswer.text(0);
       nextNum = [];
       answer = 0;
-
-      console.log("ㅁ", prevNum, nextNum, prevTotal, nextTotal, answer, calculation);
     }
   })
 
@@ -127,8 +122,8 @@ $(document).ready(function(){
   $('.answerBtn').click(function(){
     if (nextTotal != 0) {
       getAnswer();
-      $showPrev.text(prevTotal.toLocaleString() + " " + calculation + " " + nextTotal.toLocaleString());
-      $showAnswer.text(answer.toLocaleString());
+      $showPrev.text(numComma(prevTotal) + " " + calculation + " " + numComma(nextTotal));
+      $showAnswer.text(answer.toPrecision(6));
       clearAll();
     }
   })
@@ -159,18 +154,18 @@ $(document).ready(function(){
       if(nextTotal != 0){
         if(nextNum[0] == '-'){
           nextNum.shift('-');
-          $showAnswer.text((-nextTotal).toLocaleString());
+          $showAnswer.text(numComma((-nextTotal)));
         } else {
           nextNum.unshift('-');
-          $showAnswer.text((-nextTotal).toLocaleString());
+          $showAnswer.text(numComma((-nextTotal)));
         }
       } else if (prevTotal !=0) {
         if(prevNum[0] == '-'){
           prevNum.shift('-');
-          $showAnswer.text((-prevTotal).toLocaleString());
+          $showAnswer.text(numComma((-prevTotal)));
         } else {
           prevNum.unshift('-');
-          $showAnswer.text((-prevTotal).toLocaleString());
+          $showAnswer.text(numComma((-prevTotal)));
         }
       }
     }
