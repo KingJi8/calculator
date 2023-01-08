@@ -12,21 +12,6 @@ body {
   width: 300px;
 }
 
-/* 점수판 */
-.scoreBox {
-  margin: 0 auto;
-  text-align: center;
-  padding-bottom: 30px;
-}
-.scoreBox .scoreTit {
-  font-size: 20px;
-  padding-bottom: 4px;
-}
-.scoreBox .score {
-  font-size: 60px;
-  font-family: 'Rubik Bubbles', cursive;
-}
-
 /* 계산 영역 */
 .calculator {
   border-radius: 20px;
