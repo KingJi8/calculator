@@ -1,5 +1,7 @@
 let prevNum = [];
+let prevDec = [];
 let nextNum = [];
+let nextDec = [];
 let prevTotal = 0;
 let nextTotal = 0;
 let answer = 0;
@@ -15,7 +17,9 @@ function clearAll(){
   prevTotal = 0;
   nextTotal = 0;
   prevNum = [];
+  prevDec = [];
   nextNum = [];
+  nextDec = [];
   calculation = '';
 }
   
@@ -39,75 +43,79 @@ $(document).ready(function(){
   let $showAnswer = $(".showBox .showArea");
   let $showPrev = $(".showBox .prevArea");
 
-  // 숫자 버튼을 눌렀을 때
+  // 숫자 버튼
   $('.numBtn').click(function(){
     // 첫번째 숫자
-    if(calculation == '' && prevNum.length < 10) {
+    if(calculation == '' && (prevNum.length + prevDec.length) < 10) {
         $showPrev.text('');
         answer=0;
-        // 소수점 고려
-        if($(this).text() == "." && prevNum.includes(".") == true) {
+        // 소수점 더블클릭
+        if($(this).text() == "." && prevDec.includes(".")) {
           console.log("nothing")
-        } else if($(this).text() == "." && prevNum.length == 0) {
-          prevNum.push("0.");
         } 
-        // 그 외 숫자
+        // 소수점 반영
+        else if($(this).text() == ".") {
+          prevDec.push(".");
+          prevNum.length == 0 && prevNum.push("0");
+        }
+        // 소수점 이하 숫자
+        else if(prevDec.includes(".") == true) {
+          prevDec.push($(this).text());
+        }
+        // 정수 부분
         else {
           prevNum.push($(this).text());
-          console.log($(this).text(), prevNum);
         }
-        prevTotal = Number(prevNum.join(''));
-        $showAnswer.text(numComma(prevTotal));
-        console.log(prevNum,nextNum,prevTotal,nextTotal,answer,calculation)
+        $showAnswer.text(numComma(Number(prevNum.join(''))) + prevDec.join(''));
+        prevTotal = Number(prevNum.join('') + prevDec.join(''));
     } 
     // 두번째 숫자
-    else if(calculation != '' && nextNum.length < 10){
-        // 소수점 고려
-        if($(this).text() == "." && nextNum.includes("." || "0.") == true) {
-          console.log("nothing")
-        } else if($(this).text() == "." && nextNum.length == 0) {
-          nextNum.push("0.");
-        } 
-        // 그 외 숫자
+    else if(calculation != '' && (nextNum.length + nextDec.length) < 10){
+        if($(this).text() == "." && nextDec.includes(".")) {
+          console.log("nothing");
+        } else if($(this).text() == ".") {
+          nextDec.push(".");
+          nextNum.length == 0 && nextNum.push("0");
+        } else if(nextDec.includes(".") == true) {
+          nextDec.push($(this).text());
+        }
         else {
           nextNum.push($(this).text());
-          console.log($(this).text(), nextNum);
+          console.log(nextNum, nextDec);
         }
-        nextTotal = Number(nextNum.join(''));
-        $showAnswer.text(numComma(nextTotal));
+        $showAnswer.text(numComma(Number(nextNum.join(''))) + nextDec.join(''));
+        nextTotal = Number(nextNum.join('') + nextDec.join(''));
     }
   })
 
-  // 계산식 버튼을 눌렀을 때
+  // 사칙연산 버튼
   $('.calBtn').click(function(){
-    // 사칙연산이 이미 있는 경우
+    // 사칙연산, 첫번째 숫자 입력 완료
     if (calculation != '' && prevTotal != 0){
-      // 숫자를 아무것도 안 친 경우
+      // 사칙연산 변경
       if(nextNum.length == 0){
         calculation = $(this).text();
         $showPrev.text(numComma(prevTotal) + " " + calculation);
       } 
-      // 숫자를 친 경우, 계산 진행
+      // 두번째 숫자까지 입력 시, 기존 사칙 연산으로 계산
       else {
         getAnswer();
+        clearAll();
         prevTotal = answer;
         calculation = $(this).text();
         $showPrev.text(numComma(prevTotal) + " " + calculation);
         $showAnswer.text(0);
-        nextTotal = 0;
-        prevNum = [];
-        nextNum = [];
         answer = 0;
       }
     }
 
-    // 사칙연산 x , 답 x (첫 계산)
+    // 기존 사칙연산 x, 답 x (첫 계산)
     else if(calculation == '' && answer == 0) {
       calculation = $(this).text();
       $showPrev.text(numComma(prevTotal) + " " + calculation);
       $showAnswer.text(0);
     }
-    // 사칙연산 x , 답 o (=을 누르고 사칙연산을 누른 경우)
+    // 기존 사칙연산 x, 답 o (=을 누르고 사칙연산을 누른 경우)
     else if(calculation == '' && answer != 0) {
       calculation = $(this).text();
       prevTotal = answer;
