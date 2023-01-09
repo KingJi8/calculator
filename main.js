@@ -175,9 +175,11 @@ $(document).ready(function(){
     if($(this).text() == 'C'){
       if(nextTotal != 0) {
         nextNum = [];
+        nextDec = [];
         $showAnswer.text(0);
       } else if (prevTotal !=0) {
         prevNum = [];
+        prevDec = [];
         $showAnswer.text(0);
       }
     }

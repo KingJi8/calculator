@@ -105,12 +105,12 @@ body {
   -webkit-transition-property: opacity;
   transition-property: opacity;
 }
-.btnBox button:hover{
+.btnBox button:not(:disabled):hover{
   cursor: pointer;
 }
-.btnBox button:hover::before {
+.btnBox button:not(:disabled):hover::before {
   opacity: 1;
 }
-.btnBox button:active {
+.btnBox button:not(:disabled):active {
   background-color: #C0DEFF;
 }
