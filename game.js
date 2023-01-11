@@ -89,20 +89,36 @@ $(document).ready(function(){
       $score.text(0);
     }
     $scoreTit.text("Your Score");
-    $startBtn.text("Next");
+    $startBtn.text("Skip");
     $showAnswer.text(0);
 
     // 문제 만들기
     while(checkBigger >= 0) {
-      fstNum = getRandomInt(1,10);
-      secNum = getRandomInt(1,10);
+      if (score < 50) {
+        fstNum = getRandomInt(1,10);
+        secNum = getRandomInt(1,10);
+      } else if (score < 100) {
+        fstNum = getRandomInt(1,100);
+        secNum = getRandomInt(1,100);
+      } else if (score < 200) {
+        fstNum = getRandomInt(1,1000);
+        secNum = getRandomInt(1,1000);
+      } else if (score < 400) {
+        fstNum = getRandomInt(1,10 ** 3);
+        secNum = getRandomInt(1,10 ** 3);
+      } else if (score < 800) {
+        fstNum = getRandomInt(1,10 ** 4);
+        secNum = getRandomInt(1,10 ** 4);
+      } else if (score >= 800) {
+        fstNum = getRandomInt(1,10 ** 5);
+        secNum = getRandomInt(1,10 ** 5);
+      }
       checkBigger = secNum - fstNum;
-      console.log(checkBigger);
     }
     checkBigger = 0;
     getMathood();
     answer = Math.floor(answer*100)/100;
-    
+
     getQuestionPlace();
 
     if(checkVal == fstNum) { fstNum = "?"}
@@ -110,9 +126,9 @@ $(document).ready(function(){
     else if(checkVal == answer) { answer = "?"}
     else if(checkVal == mathood) { mathood = "?"}
 
-    $fstNum.text(fstNum);
-    $secNum.text(secNum);
-    $answer.text(answer);
+    $fstNum.text(fstNum.toLocaleString());
+    $secNum.text(secNum.toLocaleString());
+    $answer.text(answer.toLocaleString());
     $mathood.text(mathood);
     $equal.text(" = ");
   })
@@ -164,6 +180,7 @@ $(document).ready(function(){
       $showAnswer.text("땡! 틀렸네요.");
       score = score - 5;
     }
+    $startBtn.text("Next");
     $score.text(score);
     clickIns = [];
     clickDec = [];
